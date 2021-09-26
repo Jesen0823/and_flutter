@@ -16,6 +16,23 @@ class HotWidgetState extends State<HotWidget> {
   @override
   void initState() {
     super.initState();
+    initData();
+  }
+
+  void initData() async {
+    final prefs = await SharedPreferences.getInstance();//获取 prefs
+
+    String city = prefs.getString('curCity');//获取 key 为 curCity 的值
+
+    if (city.isNotEmpty) { //如果有值
+      setState((){
+        curCity = city;
+      });
+    } else {//如果没有值，则使用默认值
+      setState((){
+        curCity = '深圳';
+      });
+    }
   }
 
   @override
