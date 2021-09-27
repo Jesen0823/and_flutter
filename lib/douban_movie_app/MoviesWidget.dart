@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MoviesWidget extends StatefulWidget {
   @override
@@ -8,6 +9,40 @@ class MoviesWidget extends StatefulWidget {
 }
 
 class MoviesWidgetState extends State<MoviesWidget> {
+
+  // Android调用Flutter，更新Flutter的UI
+  static const platformChannel = const MethodChannel('and_flutter.test/Android2Flutter');
+  String textContent = '电影[in flutter]';
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 添加监听，如果被Android改动数据，用state更新数据
+    platformChannel.setMethodCallHandler((call) async{
+      switch(call.method){
+        case 'changeText':
+          String content = await call.arguments['content'];
+          if(context.toString().isNotEmpty){
+            setState(() {
+              textContent = content;
+              print("movie initState, textContent: $textContent");
+            });
+            return 'Success';
+          }else{
+            throw PlatformException(
+                code: '-2',
+                message: 'changeText fail',
+                details: 'content is null'
+            );
+          }
+        default:
+        // 方法未实现
+          throw MissingPluginException();
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -50,10 +85,10 @@ class MoviesWidgetState extends State<MoviesWidget> {
                       child: TabBarView(
                         children: <Widget>[
                           Center(
-                            child: Text('电影'),
+                            child: Text(textContent),
                           ),
                           Center(
-                            child: Text('电视'),
+                            child: Text('电影'),
                           )
                         ],
                       ),

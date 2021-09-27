@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class MineWidget extends StatefulWidget {
   @override
@@ -9,6 +10,9 @@ class MineWidget extends StatefulWidget {
 }
 
 class MineWidgetState extends State<MineWidget> {
+  // Flutter调用Android的Api
+  static const methodChannel = const MethodChannel('and_flutter/flutter2Android');
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -20,11 +24,17 @@ class MineWidgetState extends State<MineWidget> {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.card_giftcard),
-              onPressed: () {},
+              onPressed: () {
+                // 此处flutter调用Android，弹出Toast
+                showToast('flutter调用Android的Toast');
+              },
             ),
             IconButton(
               icon: Icon(Icons.settings),
-              onPressed: () {},
+              onPressed: () {
+                // 此处flutter调用Android，弹出Dialog
+                methodChannel.invokeMethod('appSetting', '尊敬的用户，设置页面暂时关闭');
+              },
             )
           ],
           flexibleSpace: FlexibleSpaceBar(
@@ -86,5 +96,24 @@ class MineWidgetState extends State<MineWidget> {
         )
       ],
     );
+  }
+
+  /// 调用Android方法弹出Toast 封装
+  /// 为了不阻塞 UI，PlatformChannel 使⽤ async 和 await
+  void showToast(String content) async {
+    // arguments 是参数，只能是Map或者JSON类型，这⾥是Map 类型
+    var arguments = Map();
+    arguments['content'] = content;
+    try {
+      String result = await methodChannel.invokeMethod('toast', arguments);
+      //success
+      print('showToast ' + result);
+    } on PlatformException catch (e) {
+      //error
+      print('showToast ' + e.code + e.message! + e.details);
+    } on MissingPluginException catch (e) {
+      //notImplemented
+      print('showToast ' + e.message!);
+    }
   }
 }
