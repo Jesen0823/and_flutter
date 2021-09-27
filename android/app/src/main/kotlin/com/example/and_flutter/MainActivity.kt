@@ -8,6 +8,7 @@ import android.util.Log
 import android.widget.Toast
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
@@ -20,7 +21,12 @@ class MainActivity: FlutterActivity() {
 
     private val channel = "and_flutter/flutter2Android"
     private val channel_revese = "and_flutter.test/Android2Flutter"
+
+    private val channel_event = "and_flutter.hot/event"
+
     private lateinit var platfromChannel: MethodChannel
+
+    private var eventSink:EventChannel.EventSink? = null
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
@@ -53,6 +59,9 @@ class MainActivity: FlutterActivity() {
             }
 
         })
+
+        // EventChannel 事件发送
+        eventSink?.success("来自Android的信息")
     }
 
 
@@ -94,8 +103,36 @@ class MainActivity: FlutterActivity() {
         /** 与Flutter的交互, Android调用Flutter */
         platfromChannel = MethodChannel(flutterEngine.dartExecutor, channel_revese)
 
+        /** EventChannel, Android发信息给Flutter */
+        EventChannel(flutterEngine.dartExecutor, channel_event).setStreamHandler(object :EventChannel.StreamHandler{
+            override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
+                if (events != null) {
+                    eventSink = events
+                }
+            }
+
+            override fun onCancel(arguments: Any?) {
+                eventSink = null
+            }
+        })
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

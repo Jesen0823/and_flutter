@@ -11,6 +11,7 @@ class HotWidget extends StatefulWidget {
 }
 
 class HotWidgetState extends State<HotWidget> {
+
   String curCity = '上海';
 
   @override
@@ -19,17 +20,20 @@ class HotWidgetState extends State<HotWidget> {
     initData();
   }
 
+
   void initData() async {
-    final prefs = await SharedPreferences.getInstance();//获取 prefs
+    final prefs = await SharedPreferences.getInstance(); //获取 prefs
 
-    String city = prefs.getString('curCity');//获取 key 为 curCity 的值
+    String city = prefs.getString('curCity'); //获取 key 为 curCity 的值
 
-    if (city.isNotEmpty) { //如果有值
-      setState((){
+    if (city.isNotEmpty) {
+      //如果有值
+      setState(() {
         curCity = city;
       });
-    } else {//如果没有值，则使用默认值
-      setState((){
+    } else {
+      //如果没有值，则使用默认值
+      setState(() {
         curCity = '深圳';
       });
     }
@@ -110,7 +114,8 @@ class HotWidgetState extends State<HotWidget> {
       );
     } else {
       return Center(
-        child: CircularProgressIndicator(),
+        //child: CircularProgressIndicator(),
+        child: Text('加载中..'),
       );
     }
   }
