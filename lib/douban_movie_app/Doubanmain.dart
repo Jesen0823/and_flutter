@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'CitysWidget.dart';
 import 'MineWidget.dart';
 import 'MoviesWidget.dart';
 import 'hot/HotWidget.dart';
 
-main(){
+/**通过 InheritedWidget 对豆瓣电影 App 的重构，我们可以发现 InheritedWidget 的优点：
+
+* 可以对全局状态进行管理
+
+但是，也有很多的缺点：
+
+* UI 逻辑和业务逻辑没有分开
+* 无法管理本地状态
+* 数据只能从上到下传递，无法从下到上传递
+* 随着 App 变大，代码维护也会变得越来越难。
+
+所以，不要使用 InheritedWidget 对状态进行管理。*/
+
+main() async {
   debugPaintSizeEnabled = false;
   runApp(MyApp());
 }
@@ -46,13 +60,41 @@ class MyHomePage extends StatefulWidget{
 class _MyHomePageState extends State<MyHomePage>{
 
   int _selectedIndex = 0;
+  late String _curCity;
 
   final _widgetItems = [HotWidget(), MoviesWidget(), MineWidget()];
 
   @override
+  void initState() {
+    super.initState();
+    initData();
+  }
+
+  void initData() async{
+    final prefs = await SharedPreferences.getInstance(); //获取 prefs
+
+    String city = prefs.getString('curCity'); //获取 key 为 curCity 的值
+
+    if (city != null && city.isNotEmpty) {
+      //如果有值
+      setState(() {
+        _curCity = city;
+      });
+    } else {
+      //如果没有值，则使用默认值
+      setState(() {
+        _curCity = '深圳';
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _widgetItems[_selectedIndex],
+      body: ShareDataInheritedWidget(
+        _curCity,
+      child: _widgetItems[_selectedIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.sailing), label: '热映'),
@@ -71,6 +113,26 @@ class _MyHomePageState extends State<MyHomePage>{
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+}
+
+/// 定义 InheritedWidget 管理存储全局数据，即全局城市state
+class ShareDataInheritedWidget extends InheritedWidget{
+
+  String curCity;
+
+  ShareDataInheritedWidget(this.curCity, {required Widget child}) : super(child: child);
+
+  //定义一个方法，方便子树中的 Widget 获取 ShareDataInheritedWidget 实例
+  static ShareDataInheritedWidget? of(BuildContext context){
+    return context.dependOnInheritedWidgetOfExactType<ShareDataInheritedWidget>();
+  }
+
+  /// 判断需不需要通知依赖 InheritedWidget 数据的子 Widget
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    return (oldWidget as ShareDataInheritedWidget).curCity != curCity;
   }
 
 }
