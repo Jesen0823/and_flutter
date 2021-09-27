@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../Doubanmain.dart';
 import 'list/HotMoviesListWidget.dart';
 
 class HotWidget extends StatefulWidget {
@@ -17,31 +18,12 @@ class HotWidgetState extends State<HotWidget> {
   @override
   void initState() {
     super.initState();
-    initData();
   }
 
-
-  void initData() async {
-    final prefs = await SharedPreferences.getInstance(); //获取 prefs
-
-    String city = prefs.getString('curCity'); //获取 key 为 curCity 的值
-
-    if (city.isNotEmpty) {
-      //如果有值
-      setState(() {
-        curCity = city;
-      });
-    } else {
-      //如果没有值，则使用默认值
-      setState(() {
-        curCity = '深圳';
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
-    if (curCity.isNotEmpty) {
+    if (ShareDataInheritedWidget.of(context)!.curCity.isNotEmpty) {
       return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -122,14 +104,18 @@ class HotWidgetState extends State<HotWidget> {
 
   void _jumpToCitysWidget() async {
     var selectCity =
-        await Navigator.pushNamed(context, '/Citys', arguments: curCity);
+        await Navigator.pushNamed(context, '/Citys',
+            arguments: ShareDataInheritedWidget.of(context)!.curCity);
     if (selectCity == null) return;
 
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('curCity', selectCity.toString()); //存取数据
 
     setState(() {
-      curCity = selectCity.toString();
+      /// 使用 InheritedWidget 是无法做到的，因为 InheritedWidget 只能把数据在
+      /// Widget 树中向下传递，下面的数据是无法向上传递，所以下面 `curCity` 的变化，
+      /// 无法通知到 InheritedWidget
+      ShareDataInheritedWidget.of(context)!.curCity = selectCity.toString();
     });
   }
 }

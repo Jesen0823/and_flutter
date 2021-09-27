@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
+import '../../Doubanmain.dart';
+
 class HotMoviesListWidget extends StatefulWidget{
   late String curCity;
 
@@ -19,7 +21,7 @@ class HotMoviesListWidget extends StatefulWidget{
   }
 }
 
-class HotMoviesListWidgetState extends State<HotMoviesListWidget>{
+class HotMoviesListWidgetState extends State<HotMoviesListWidget> with AutomaticKeepAliveClientMixin{
   List<HotMovieData> hotMovies =[];
 
   /// EventChannel 只能 从 Android 向 Flutter 发送数据，它的使⽤⽅式很像我们熟悉的 Event 的使⽤⽅式
@@ -29,9 +31,17 @@ class HotMoviesListWidgetState extends State<HotMoviesListWidget>{
   @override
   void initState() {
     super.initState();
-    _getData();
     // EventChannel设置监听
     eventChannel.receiveBroadcastStream().listen(_onListen, onDone: _onDone, cancelOnError: false);
+  }
+
+  /// didChangeDependencies() 方法会在它依赖的数据发生变化的时候调用，
+  /// 而这里 HotMoviesListWidget 依赖的数据就是其父 Widget ShareDataInheritedWidget 的数据，
+  /// didChangeDependencies() 调用的条件就是 ShareDataInheritedWidget 的 updateShouldNotify() 方法返回 true
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getData();
   }
 
   void _onListen(dynamic data) {
@@ -83,7 +93,7 @@ class HotMoviesListWidgetState extends State<HotMoviesListWidget>{
     List<HotMovieData> serverDataList = [];
     var response = await http.get(
         'https://api.douban.com/v2/movie/in_theaters?apikey=0b2bdeda43b5688921839c8ecb20399b&city=' +
-            widget.curCity +
+            ShareDataInheritedWidget.of(context)!.curCity +
             '&start=0&count=10');
 
     if(response.statusCode == 200){
