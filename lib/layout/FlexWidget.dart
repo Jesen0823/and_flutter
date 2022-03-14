@@ -67,7 +67,6 @@ class FlexWidget extends StatelessWidget{
                     flex: 1,
                       child: Container(
                         height: 30.0,
-                        width: 30.0,
                         color: Colors.yellow,
                       )
                   ),
@@ -75,7 +74,6 @@ class FlexWidget extends StatelessWidget{
                       flex: 2,
                       child: Container(
                         height: 30.0,
-                        width: 30.0,
                         color: Colors.green,
                       )
                   ),
@@ -83,7 +81,6 @@ class FlexWidget extends StatelessWidget{
                       flex: 1,
                       child: Container(
                         height: 30.0,
-                        width: 30.0,
                         color: Colors.blue,
                       )
                   ),
