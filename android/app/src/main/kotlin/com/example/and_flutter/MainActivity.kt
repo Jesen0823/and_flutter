@@ -19,7 +19,7 @@ import io.flutter.plugins.GeneratedPluginRegistrant
 
 class MainActivity: FlutterActivity() {
 
-    private val channel = "and_flutter/flutter2Android"
+   /* private val channel = "and_flutter/flutter2Android"
     private val channel_revese = "and_flutter.test/Android2Flutter"
 
     private val channel_event = "and_flutter.hot/event"
@@ -68,7 +68,7 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        /** 与Flutter的交互, Flutter调用Android */
+        *//** 与Flutter的交互, Flutter调用Android *//*
         GeneratedPluginRegistrant.registerWith(flutterEngine)
 
         MethodChannel(flutterEngine.dartExecutor,channel).setMethodCallHandler(
@@ -100,10 +100,10 @@ class MainActivity: FlutterActivity() {
                 }
             })
 
-        /** 与Flutter的交互, Android调用Flutter */
+        *//** 与Flutter的交互, Android调用Flutter *//*
         platfromChannel = MethodChannel(flutterEngine.dartExecutor, channel_revese)
 
-        /** EventChannel, Android发信息给Flutter */
+        *//** EventChannel, Android发信息给Flutter *//*
         EventChannel(flutterEngine.dartExecutor, channel_event).setStreamHandler(object :EventChannel.StreamHandler{
             override fun onListen(arguments: Any?, events: EventChannel.EventSink?) {
                 if (events != null) {
@@ -116,7 +116,7 @@ class MainActivity: FlutterActivity() {
             }
         })
 
-    }
+    }*/
 }
 
 
