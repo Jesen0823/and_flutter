@@ -57,7 +57,7 @@ class FlexWidget extends StatelessWidget{
               height: 30.0,
             ),
 
-            Text('3个 Flexible的 flex  1:2:1'),
+            Text('下面3个 Flexible的 flex  1:2:1'),
             Container(
               child: Flex(
                 direction: Axis.horizontal,
