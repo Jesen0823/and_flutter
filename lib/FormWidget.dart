@@ -70,7 +70,7 @@ class FormWidgetState extends State<FormWidget> {
                     _userPassword = value!;
                   },
                 ),
-                RaisedButton(
+                ElevatedButton(
                   child: Text('注册'),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {

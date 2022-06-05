@@ -31,8 +31,8 @@ class _Paper40State extends State<Paper40> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _ctrl = AnimationController(
-        duration: Duration(seconds: 3), vsync: this)
-      ..forward();
+        duration: Duration(seconds: 6), vsync: this)
+      ..forward()..repeat();
   }
 
   @override
@@ -65,6 +65,7 @@ class Paper40Painter extends CustomPainter {
     Paint paint = Paint()
       ..color = Colors.purple
       ..strokeWidth = 1
+      ..isAntiAlias=true
       ..style = PaintingStyle.stroke;
 
     Path path = Path();

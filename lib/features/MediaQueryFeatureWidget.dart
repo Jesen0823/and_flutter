@@ -42,7 +42,7 @@ class BodyWidget extends StatelessWidget {
                 " Screen height:" +
                 MediaQuery.of(context).size.height.toString());
             //获取子Widget 的宽高
-            print("Ttext width:" +
+            print("Text width:" +
                 _globalKey.currentContext!.size!.width.toString() +
                 " Screen height:" +
                 _globalKey.currentContext!.size!.height.toString());

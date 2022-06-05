@@ -13,7 +13,7 @@ class ShowAboutDialogWidget extends StatelessWidget {
       home: Scaffold(
           appBar: AppBar(title: Text("Flutter UI Widget -- 对话框")),
           body: Builder(
-              builder: (context) => RaisedButton(
+              builder: (context) => ElevatedButton(
                   onPressed: () {
                     showAboutDialog(
                         context: context,

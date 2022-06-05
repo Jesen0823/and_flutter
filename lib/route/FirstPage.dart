@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:and_flutter/route/PassArgumnets.dart';
 import 'package:and_flutter/route/SecondPage.dart';
 import 'package:flutter/material.dart';
@@ -50,5 +52,7 @@ class FirstPage extends StatelessWidget {
                 RouteSettings(arguments: ArgumnetData('Data from firstPage'))));
     print(
         'FirstPage: get data from PageSecond: ${(result as ArgumnetData).content}');
+
+
   }
 }

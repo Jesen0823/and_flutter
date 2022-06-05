@@ -16,7 +16,7 @@ class WrapWidget extends StatelessWidget {
           direction: Axis.horizontal,
           spacing: 5, // 主轴方向间距
           runSpacing: 10, // 交叉轴方向间距
-          alignment: WrapAlignment.center,
+          alignment: WrapAlignment.start,
           runAlignment: WrapAlignment.start,
           children: [
             Chip(

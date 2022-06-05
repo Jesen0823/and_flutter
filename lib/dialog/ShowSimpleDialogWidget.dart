@@ -30,6 +30,12 @@ class ShowSimpleDialogWidget extends StatelessWidget{
                         onPressed: (){
                           Navigator.of(context).pop();
                         },
+                      ),
+                      SimpleDialogOption(
+                        child: Text('CANCEL'),
+                        onPressed: (){
+                          Navigator.of(context).pop();
+                        },
                       )
                     ],
                   );

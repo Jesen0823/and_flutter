@@ -90,7 +90,7 @@ class BetterCoordinate {
       {Offset offset = Offset.zero, Color color = Colors.black}) {
     var builder = ui.ParagraphBuilder(ui.ParagraphStyle(
       textAlign: TextAlign.left,
-      fontSize: 11,
+      fontSize: 10,
       textDirection: TextDirection.ltr,
       maxLines: 1,
     ))
@@ -101,7 +101,7 @@ class BetterCoordinate {
 
     canvas.drawParagraph(
         builder.build()
-          ..layout(ui.ParagraphConstraints(width: 11.0 * str.length)),
+          ..layout(ui.ParagraphConstraints(width: 10.0 * str.length)),
         offset);
   }
 

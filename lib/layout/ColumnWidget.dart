@@ -16,7 +16,7 @@ class ColumnWidget extends StatelessWidget {
           children: <Widget>[
             Text("Flutter column布局"),
             Image.asset(
-              "images/avatar-7.png",
+              "/images/avatar-7.png",
               width: 200,
             )
           ],
